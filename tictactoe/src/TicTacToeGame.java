@@ -70,7 +70,23 @@ public class TicTacToeGame {
         System.out.println(board);
     }
 
-    public static void playGame(int dimensions, GameStats x, GameStats o) {
+    public static void updateGameStats(char winner, GameStats x, GameStats o) {
+        if (winner == 'X') {
+            System.out.println(winner + " won!\n");
+            x.addWin();
+            o.addLoss();
+        } else if (winner == 'O') {
+            System.out.println(winner + " won!\n");
+            x.addLoss();
+            o.addWin();
+        } else {
+            System.out.println("Scratch game. Too bad.\n");
+            x.addScratch();
+            o.addScratch();
+        }
+    }
+
+    public static void playGame(int dimensions, GameStats playerX, GameStats playerO) {
         TicTacToeBoard board = new TicTacToeBoard(dimensions);
         boolean isWon = false;
         int index = (int)(Math.random() * 2);
@@ -89,18 +105,6 @@ public class TicTacToeGame {
             index = (index + 1) % 2;
         }
 
-        if (winner == 'X') {
-            System.out.println(winner + " won!\n");
-            x.addWin();
-            o.addLoss();
-        } else if (winner == 'O') {
-            System.out.println(winner + " won!\n");
-            x.addLoss();
-            o.addWin();
-        } else {
-            System.out.println("Scratch game. Too bad.\n");
-            x.addScratch();
-            o.addScratch();
-        }
+        updateGameStats(winner, playerX, playerO);
     }
 }
