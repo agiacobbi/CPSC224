@@ -3,8 +3,8 @@ public class Coordinates {
     private int col;
 
     public Coordinates() {
-        this.row = 0;
-        this.col = 0;
+        this.row = -1;
+        this.col = -1;
     }
 
     public Coordinates(int row, int col) {

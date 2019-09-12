@@ -41,6 +41,10 @@ public class TicTacToeBoard {
         int x = coordinates.getRow();
         int y = coordinates.getCol();
 
+        if (x >= dimensions || y >= dimensions) {
+            return false;
+        }
+
         if (grid[x][y].getSymbol() == '-') {
             return true;
         }
@@ -97,7 +101,7 @@ public class TicTacToeBoard {
 
         //check diagonal
         diagonalChars = 0;
-        for (int i = dimensions - 1, j = dimensions - 1; i >= 0; i--, j--) {
+        for (int i = 0, j = dimensions - 1; i < dimensions; i++, j--) {
             if (grid[i][j].getSymbol() == playerSymbol) {
                 diagonalChars++;
             }

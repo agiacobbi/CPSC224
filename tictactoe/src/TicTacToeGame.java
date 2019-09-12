@@ -3,11 +3,18 @@ import java.util.Scanner;
 
 public class TicTacToeGame {
     public static void main(String[] args) {
-        int N = getDimensions();
+        int N;
         boolean playAgain = true;
+        GameStats playerX = new GameStats('X');
+        GameStats playerO = new GameStats('O');
+
+        System.out.println("Welcome to Tic Tac Toe! There are two players, player 'X' and player 'O'...");
+        N = getDimensions();
 
         while (playAgain) {
-            playGame(N);
+            playGame(N, playerX, playerO);
+            System.out.println(playerX);
+            System.out.println(playerO);
             playAgain = wantToPlayAgain();
         }
 
@@ -18,7 +25,7 @@ public class TicTacToeGame {
         Scanner kb = new Scanner(System.in);
         int dimensions = 0;
 
-        System.out.println("Enter an integer for dimensions of a tic tac toe board in range [3, 9]");
+        System.out.printf("Please enter a dimension, N, of the N x N Tic Tac Toe board (an integer in [3, 9]): ");
         dimensions = kb.nextInt();
 
         while (dimensions < 3 || dimensions > 9) {
@@ -33,11 +40,11 @@ public class TicTacToeGame {
         Scanner kb = new Scanner(System.in);
         char playing;
 
-        System.out.println("Would you like to play again?");
+        System.out.print("Would you like to play again? Enter 'y' to play or 'q' to quit: ");
         playing = kb.next().charAt(0);
 
-        while (playing != 'y' && playing != 'n') {
-            System.out.println("Invalid input. Enter y or n");
+        while (playing != 'y' && playing != 'q') {
+            System.out.print("Invalid input. Enter 'y' or 'q': ");
             playing = kb.next().charAt(0);
         }
 
@@ -48,50 +55,63 @@ public class TicTacToeGame {
     }
 
     public static void takeTurn(TicTacToeBoard board, char player, int dimensions) {
-        Coordinates coordinates = generateCoordinates(dimensions);
-        System.out.println("generating coordinates for " + player);
+        Scanner kb = new Scanner(System.in);
+        Coordinates playerMove = new Coordinates();
 
-        while (!board.isValidMove(coordinates)) {
-            coordinates = generateCoordinates(dimensions);
+        System.out.print("Player " + player + ", please enter the coordinates of your placement: ");
+        playerMove.setCoordinate(kb.nextInt(), kb.nextInt());
+
+        while (!board.isValidMove(playerMove)){
+            System.out.println(playerMove + " is not a valid move!\n");
+            System.out.print("Player " + player + ", please enter the coordinates of your placement: ");
+            playerMove.setCoordinate(kb.nextInt(), kb.nextInt());
         }
 
-        System.out.println(coordinates);
-        board.makeMove(coordinates, player);
-    }
-
-    public static Coordinates generateCoordinates(int dimensions) {
-        Random random = new Random();
-
-        return new Coordinates(random.nextInt(dimensions), random.nextInt(dimensions));
-    }
-
-    public static void printBoard(TicTacToeBoard board) {
-        System.out.println();
+        board.makeMove(playerMove, player);
         System.out.println(board);
     }
 
-    public static void playGame(int dimensions) {
+    public static void playGame(int dimensions, GameStats x, GameStats o) {
         TicTacToeBoard board = new TicTacToeBoard(dimensions);
         boolean isWon = false;
+        int index = (int)Math.random() * 2;
         char winner = '-';
+        char[] players = {'X', 'O'};
+
+        System.out.println("Player " + players[index] + " is going first");
+        System.out.println(board);
 
         while (!isWon && !board.isFull()) {
-            takeTurn(board, 'X', dimensions);
-            printBoard(board);
-            if (board.isWinner('X')) {
-                isWon = true;
+            /*if (turn % 2 == 0) {
+                takeTurn(board, 'X', dimensions);
+                isWon = board.isWinner('X');
                 winner = 'X';
-                break;
-            }
-
-            takeTurn(board, 'O', dimensions);
-            printBoard(board);
-            if (board.isWinner('O')) {
-                isWon = true;
+            } else {
+                takeTurn(board, 'O', dimensions);
+                isWon = board.isWinner('O');
                 winner = 'O';
             }
+            turn++;*/
+            takeTurn(board, players[index], dimensions);
+            isWon = board.isWinner(players[index]);
+            if (isWon) {
+                winner = players[index];
+            }
+            index = (index + 1) % 2;
         }
 
-        System.out.println("the winner is, " + winner + "!");
+        if (winner == 'X') {
+            System.out.println(winner + " won!\n");
+            x.addWin();
+            o.addLoss();
+        } else if (winner == 'O') {
+            System.out.println(winner + " won!\n");
+            x.addLoss();
+            o.addWin();
+        } else {
+            System.out.println("Scratch game. Too bad.\n");
+            x.addScratch();
+            o.addScratch();
+        }
     }
 }
