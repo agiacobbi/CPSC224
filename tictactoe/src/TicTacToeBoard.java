@@ -37,9 +37,87 @@ public class TicTacToeBoard {
         return board;
     }
 
-    public boolean isValidMove() {
-        return true;
+    public boolean isValidMove(Coordinates coordinates) {
+        int x = coordinates.getRow();
+        int y = coordinates.getCol();
+
+        if (grid[x][y].getSymbol() == '-') {
+            return true;
+        }
+
+        return false;
     }
 
+    public void makeMove(Coordinates coordinates, char playerSymbol) {
+        int x = coordinates.getRow();
+        int y = coordinates.getCol();
 
+        grid[x][y].setSymbol(playerSymbol);
+    }
+
+    public boolean isWinner(char playerSymbol) {
+
+        //check columns
+        for (int i = 0; i < dimensions; i++) {
+            int charsInARow = 0;
+            for (int j = 0; j < dimensions; j++) {
+                if (grid[i][j].getSymbol() == playerSymbol) {
+                    charsInARow++;
+                }
+            }
+            if (charsInARow == dimensions) {
+                return true;
+            }
+        }
+
+        //check rows
+        for (int j = 0; j < dimensions; j++) {
+            int charsInARow = 0;
+            for (int i = 0; i < dimensions; i++) {
+                if (grid[i][j].getSymbol() == playerSymbol) {
+                    charsInARow++;
+                }
+            }
+            if (charsInARow == dimensions) {
+                return true;
+            }
+        }
+
+
+        //check diagonal
+        int diagonalChars = 0;
+        for (int i = 0, j = 0; i < dimensions; i++, j++) {
+            if (grid[i][j].getSymbol() == playerSymbol) {
+                diagonalChars++;
+            }
+        }
+        if (diagonalChars == dimensions) {
+            return true;
+        }
+
+        //check diagonal
+        diagonalChars = 0;
+        for (int i = dimensions - 1, j = dimensions - 1; i >= 0; i--, j--) {
+            if (grid[i][j].getSymbol() == playerSymbol) {
+                diagonalChars++;
+            }
+        }
+        if (diagonalChars == dimensions) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isFull() {
+        for (Cell[] column : grid) {
+            for (Cell cell : column) {
+                if (cell.getSymbol() == '-') {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

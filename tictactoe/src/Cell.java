@@ -12,9 +12,22 @@ public class Cell {
         this.symbol = symbol;
     }
 
-    public void setCoordinates(int row, int col) {
-        this.coordinates.setCoordinate(row, col);
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
+    }
+
 
     @Override
     public String toString() {
