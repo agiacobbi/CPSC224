@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -74,7 +73,7 @@ public class TicTacToeGame {
     public static void playGame(int dimensions, GameStats x, GameStats o) {
         TicTacToeBoard board = new TicTacToeBoard(dimensions);
         boolean isWon = false;
-        int index = (int)Math.random() * 2;
+        int index = (int)(Math.random() * 2);
         char winner = '-';
         char[] players = {'X', 'O'};
 
@@ -82,16 +81,6 @@ public class TicTacToeGame {
         System.out.println(board);
 
         while (!isWon && !board.isFull()) {
-            /*if (turn % 2 == 0) {
-                takeTurn(board, 'X', dimensions);
-                isWon = board.isWinner('X');
-                winner = 'X';
-            } else {
-                takeTurn(board, 'O', dimensions);
-                isWon = board.isWinner('O');
-                winner = 'O';
-            }
-            turn++;*/
             takeTurn(board, players[index], dimensions);
             isWon = board.isWinner(players[index]);
             if (isWon) {
