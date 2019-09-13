@@ -1,3 +1,16 @@
+/**
+ * This program is a game driver for a TicTacToeBoard. It allows users
+ * to play NxN Tic Tac Toe and displays performance stats for both
+ * players at the end of each game. At the end of a game, users can quit
+ * or play another game.
+ * CPSC 224-01, Fall 2019
+ * Programming Assignment #2
+ * No sources to cite.
+ *
+ * @author Alex Giacobbi
+ * @version v1.0 9/10/19
+ */
+
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -10,6 +23,7 @@ public class TicTacToeGame {
         System.out.println("Welcome to Tic Tac Toe! There are two players, player 'X' and player 'O'...");
         N = getDimensions();
 
+        // Plays games and displays stats at the end of each game until user chooses to quit programs
         while (playAgain) {
             playGame(N, playerX, playerO);
             System.out.println(playerX);
@@ -20,6 +34,11 @@ public class TicTacToeGame {
         System.out.println("Thanks for playing. Goodbye.");
     }
 
+    /**
+     * Gets a set of dimensions from user in range [3, 9]
+     *
+     * @return integer number of dimensions for a Tic Tac Toe board
+     */
     public static int getDimensions() {
         Scanner kb = new Scanner(System.in);
         int dimensions = 0;
@@ -35,6 +54,11 @@ public class TicTacToeGame {
         return dimensions;
     }
 
+    /**
+     * Checks if user would like to play again or quit program
+     *
+     * @return true if user would like to play another game false otherwise
+     */
     public static boolean wantToPlayAgain() {
         Scanner kb = new Scanner(System.in);
         char playing;
@@ -53,7 +77,13 @@ public class TicTacToeGame {
         return false;
     }
 
-    public static void takeTurn(TicTacToeBoard board, char player, int dimensions) {
+    /**
+     * Gets coordinates valid coordinates for a plyer move and executes move
+     *
+     * @param board TicTacToeBoard user is making move on
+     * @param player character symbol of player making move
+     */
+    public static void takeTurn(TicTacToeBoard board, char player) {
         Scanner kb = new Scanner(System.in);
         Coordinates playerMove = new Coordinates();
 
@@ -70,6 +100,13 @@ public class TicTacToeGame {
         System.out.println(board);
     }
 
+    /**
+     * Updates game states for both player the end of a game
+     *
+     * @param winner character indicating winner ('X' or 'O') of the game '-' if a tie
+     * @param x GameStats for player X
+     * @param o GameStats for player O
+     */
     public static void updateGameStats(char winner, GameStats x, GameStats o) {
         if (winner == 'X') {
             System.out.println(winner + " won!\n");
@@ -86,18 +123,26 @@ public class TicTacToeGame {
         }
     }
 
+    /**
+     * Handles game turn loop for a game of Tic Tac Toe. Game is over when
+     * the board is full or a player has made a winning move.
+     *
+     * @param dimensions integer number of dimensions of TicTacToeBoard
+     * @param playerX GameStats for player X
+     * @param playerO GameStats for player O
+     */
     public static void playGame(int dimensions, GameStats playerX, GameStats playerO) {
         TicTacToeBoard board = new TicTacToeBoard(dimensions);
         boolean isWon = false;
-        int index = (int)(Math.random() * 2);
+        int index = (int)(Math.random() * 2);          // Randomly selects which player will go first
         char winner = '-';
-        char[] players = {'X', 'O'};
+        char[] players = {'X', 'O'};                   // Players stored in array and accessed in alternating pattern
 
         System.out.println("Player " + players[index] + " is going first");
         System.out.println(board);
 
         while (!isWon && !board.isFull()) {
-            takeTurn(board, players[index], dimensions);
+            takeTurn(board, players[index]);
             isWon = board.isWinner(players[index]);
             if (isWon) {
                 winner = players[index];
