@@ -39,11 +39,11 @@ public class TicTacToeGame {
      *
      * @return integer number of dimensions for a Tic Tac Toe board
      */
-    public static int getDimensions() {
+    private static int getDimensions() {
         Scanner kb = new Scanner(System.in);
-        int dimensions = 0;
+        int dimensions;
 
-        System.out.printf("Please enter a dimension, N, of the N x N Tic Tac Toe board (an integer in [3, 9]): ");
+        System.out.print("Please enter a dimension, N, of the N x N Tic Tac Toe board (an integer in [3, 9]): ");
         dimensions = kb.nextInt();
 
         while (dimensions < 3 || dimensions > 9) {
@@ -59,7 +59,7 @@ public class TicTacToeGame {
      *
      * @return true if user would like to play another game false otherwise
      */
-    public static boolean wantToPlayAgain() {
+    private static boolean wantToPlayAgain() {
         Scanner kb = new Scanner(System.in);
         char playing;
 
@@ -71,10 +71,7 @@ public class TicTacToeGame {
             playing = kb.next().charAt(0);
         }
 
-        if (playing == 'y') {
-            return true;
-        }
-        return false;
+        return playing == 'y';
     }
 
     /**
@@ -83,7 +80,7 @@ public class TicTacToeGame {
      * @param board TicTacToeBoard user is making move on
      * @param player character symbol of player making move
      */
-    public static void takeTurn(TicTacToeBoard board, char player) {
+    private static void takeTurn(TicTacToeBoard board, char player) {
         Scanner kb = new Scanner(System.in);
         Coordinates playerMove = new Coordinates();
 
@@ -107,7 +104,7 @@ public class TicTacToeGame {
      * @param x GameStats for player X
      * @param o GameStats for player O
      */
-    public static void updateGameStats(char winner, GameStats x, GameStats o) {
+    private static void updateGameStats(char winner, GameStats x, GameStats o) {
         if (winner == 'X') {
             System.out.println(winner + " won!\n");
             x.addWin();
@@ -131,7 +128,7 @@ public class TicTacToeGame {
      * @param playerX GameStats for player X
      * @param playerO GameStats for player O
      */
-    public static void playGame(int dimensions, GameStats playerX, GameStats playerO) {
+    private static void playGame(int dimensions, GameStats playerX, GameStats playerO) {
         TicTacToeBoard board = new TicTacToeBoard(dimensions);
         boolean isWon = false;
         int index = (int)(Math.random() * 2);          // Randomly selects which player will go first

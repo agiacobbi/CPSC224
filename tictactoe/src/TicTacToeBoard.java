@@ -151,11 +151,7 @@ public class TicTacToeBoard {
                 diagonalChars++;
             }
         }
-        if (diagonalChars == dimensions) {
-            return true;
-        }
-
-        return false;
+        return diagonalChars == dimensions;
     }
 
     /**
